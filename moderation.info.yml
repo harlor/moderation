@@ -1,0 +1,7 @@
+type: module
+name: Moderation
+description: 'A node and comment moderation queue'
+core: 8.x
+dependencies:
+  - drupal:views
+
