@@ -1,0 +1,8 @@
+
+# Moderation type menu items definition
+entity.moderation_type.collection:
+  title: 'Moderation types'
+  route_name: entity.moderation_type.collection
+  description: 'List Moderation types'
+  parent: system.admin_structure
+  weight: 99

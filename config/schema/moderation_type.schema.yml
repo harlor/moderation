@@ -1,0 +1,18 @@
+moderation.moderation_type.*:
+  type: config_entity
+  label: 'Moderation type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    entity_type:
+      type: string
+      label: 'Entity type'
+    bundle:
+      type: string
+      label: 'Bundle'
+    uuid:
+      type: string
