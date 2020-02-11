@@ -14,7 +14,7 @@ use Drupal\Core\Plugin\DefaultPluginManager;
  * @see \Drupal\Core\Archiver\ArchiverInterface
  * @see plugin_api
  */
-class ActionManager extends DefaultPluginManager {
+class ModerationActionManager extends DefaultPluginManager {
 
   /**
    * Constructs a ActionManager object.
@@ -32,8 +32,8 @@ class ActionManager extends DefaultPluginManager {
       'Plugin/Moderation',
       $namespaces,
       $module_handler,
-      'Drupal\moderation\Plugin\ActionInterface',
-      'Drupal\moderation\Annotation\Action'
+      'Drupal\moderation\Plugin\ModerationActionInterface',
+      'Drupal\moderation\Annotation\ModerationAction'
     );
     $this->alterInfo('moderation_action_info');
     $this->setCacheBackend($cache_backend, 'moderation_action_info_plugins');

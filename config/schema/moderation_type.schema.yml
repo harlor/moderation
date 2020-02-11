@@ -14,5 +14,8 @@ moderation.moderation_type.*:
     bundle:
       type: string
       label: 'Bundle'
+    actions:
+      type: sequence
+      label: 'Moderation actions'
     uuid:
       type: string

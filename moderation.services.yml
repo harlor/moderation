@@ -1,0 +1,4 @@
+services:
+  plugin.manager.moderation_action:
+    class: Drupal\moderation\ModerationActionManager
+    parent: default_plugin_manager

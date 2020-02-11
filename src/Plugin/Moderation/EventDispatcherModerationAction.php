@@ -1,21 +1,20 @@
 <?php
 
+namespace Drupal\moderation\Plugin\Moderation;
+
+use Drupal\moderation\Plugin\ModerationActionInterface;
+
 /**
  * Plugin implementation of the 'text_plain' formatter.
  *
  * @ModerationAction(
- *   id = "text_plain",
- *   label = @Translation("Plain text"),
- *   field_types = {
- *     "text",
- *     "text_long",
- *     "text_with_summary",
- *   },
- *   edit = {
- *     "editor" = "direct",
- *   },
+ *   id = "event_dispatcher",
+ *   label = @Translation("Event dispatcher"),
  * )
  */
-class EventDispatcherAction {
+class EventDispatcherModerationAction implements ModerationActionInterface {
+  public function action() {
+
+  }
 
 }

@@ -2,7 +2,6 @@
 
 namespace Drupal\moderation\Form;
 
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
@@ -74,6 +73,23 @@ class ModerationTypeForm extends EntityForm {
       '#weight' => 2,
     ];
 
+    $form['moderation_action'] = [
+      '#weight' => 4,
+      '#description' => $this->t('Actions to perform when triggered.'),
+    ];
+
+    $action_plugin_manager = \Drupal::service('plugin.manager.moderation_action');
+    $actions = $moderation_type->get('actions');
+
+    foreach ($action_plugin_manager->getDefinitions() as $definition) {
+      $key = 'moderation_action_' . $definition['id'];
+      $form['moderation_action'][$key] = [
+        '#title' => $definition['label'],
+        '#type' => 'checkbox',
+        '#default_value' => $actions[$key],
+      ];
+    }
+
     return $form;
   }
 
@@ -84,6 +100,14 @@ class ModerationTypeForm extends EntityForm {
     $moderation_type = $this->entity;
     $moderation_type->set('entity_type', $form_state->getValue('entity_type'));
     $moderation_type->set('bundle', $form_state->getValue($form_state->getValue('entity_type') . '_bundle'));
+    $actions = [];
+    foreach ($form['moderation_action'] as $key => $item) {
+      if (substr($key, 0, 1) != '#') {
+        $actions[$key] = $form_state->getValue($key);
+      }
+    }
+    $moderation_type->set('actions', $actions);
+
     $status = $moderation_type->save();
 
     switch ($status) {

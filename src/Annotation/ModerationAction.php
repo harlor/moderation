@@ -5,7 +5,7 @@ namespace Drupal\moderation\Annotation;
 use Drupal\Component\Annotation\Plugin;
 
 /**
- * Defines a FieldFormatter annotation object.
+ * Defines a ModerationAction annotation object.
  *
  * Additional annotation keys for formatters can be defined in
  * hook_field_formatter_info_alter().
@@ -17,7 +17,7 @@ use Drupal\Component\Annotation\Plugin;
  *
  * @Annotation
  */
-class Action extends Plugin {
+class ModerationAction extends Plugin {
 
   /**
    * The plugin ID.
