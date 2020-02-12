@@ -58,6 +58,10 @@ class Moderation extends ContentEntityBase implements ModerationInterface {
     return $this->get('name')->value;
   }
 
+  public function getModerationType() {
+    return $this->get('type')->getValue()[0]['value'];
+  }
+
   /**
    * {@inheritdoc}
    */

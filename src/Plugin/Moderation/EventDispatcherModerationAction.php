@@ -20,7 +20,8 @@ class EventDispatcherModerationAction implements ModerationActionInterface {
   }
 
   public function links(EntityInterface $entity, ModerationInterface $moderation) {
-    return 'FOO';
+    // @todo Add link to dispatch event
+    return 'Todo';
 
   }
 

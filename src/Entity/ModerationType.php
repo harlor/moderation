@@ -72,13 +72,12 @@ class ModerationType extends ConfigEntityBase implements ModerationTypeInterface
   protected $actions;
 
   public function actionLinks(EntityInterface $entity) {
-
-    $plugin_manager = \Drupal::service('plugin.manager.moderation_action');
-    foreach (array_keys($this->actions) as $action) {
-      /** @var \Drupal\moderation\Plugin\ModerationActionInterface $action_plugin */
-      $action_plugin = $plugin_manager->createInstance($action);
-      return $action_plugin->links($entity, $this->getModerationEntity($entity));
+    $links = [];
+    foreach ($this->getActions() as $action_plugin) {
+      $links += $action_plugin->links($entity, $this->getModerationEntity($entity));
     }
+
+    return $links;
   }
 
   public function getModerationEntity(EntityInterface $entity) {
@@ -103,5 +102,30 @@ class ModerationType extends ConfigEntityBase implements ModerationTypeInterface
 
   public function entityIsModerated(EntityInterface $entity) {
     return $this->entity_type == $entity->getEntityTypeId() && $this->bundle == $entity->bundle();
+  }
+
+  public function getActions() {
+    $plugin_manager = \Drupal::service('plugin.manager.moderation_action');
+    $action_plugins = [];
+    foreach($this->actions as $action_name => $enabled) {
+      if ($enabled) {
+        $action_plugins[] = $plugin_manager->createInstance($action_name);
+      }
+    }
+
+    return $action_plugins;
+  }
+
+  public function getAction($action_name) {
+    $plugin_manager = \Drupal::service('plugin.manager.moderation_action');
+    if (isset($this->actions[$action_name]) && $this->actions[$action_name]) {
+      return $plugin_manager->createInstance($action_name);
+    }
+
+    return FALSE;
+  }
+
+  public function moderatedEntityType() {
+    return $this->entity_type;
   }
 }

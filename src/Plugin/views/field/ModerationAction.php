@@ -62,12 +62,25 @@ class ModerationAction extends FieldPluginBase {
    * @{inheritdoc}
    */
   public function render(ResultRow $values) {
+    $links = [];
     $entity = $values->_entity;
     $moderation_types = \Drupal::entityTypeManager()->getStorage('moderation_type')->loadMultiple();
     foreach ($moderation_types as $moderation_type) {
       if ($moderation_type->entityIsModerated($entity)) {
-        return $moderation_type->actionLinks($entity);
+        $links += $moderation_type->actionLinks($entity);
       }
     }
+
+    $content = [
+      'container' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['container'],
+        ],
+      ],
+    ];
+    $content['container'] += $links;
+
+    return $content;
   }
 }

@@ -1,0 +1,10 @@
+# Provide moderation action route
+moderation.action:
+  path: '/moderation/{moderation_type}/{entity_id}/{action_name}'
+  defaults:
+    _controller: '\Drupal\moderation\Controller\ModerationActionController::action'
+    _title: 'Moderation action'
+    nojs: ajax
+  requirements:
+    _permission: 'edit moderation entities'
+    _csrf_token: 'TRUE'
