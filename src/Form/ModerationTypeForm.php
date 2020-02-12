@@ -87,6 +87,7 @@ class ModerationTypeForm extends EntityForm {
         '#title' => $definition['label'],
         '#type' => 'checkbox',
         '#default_value' => $actions[$key],
+        '#plugin' => $definition['id'],
       ];
     }
 
@@ -103,7 +104,7 @@ class ModerationTypeForm extends EntityForm {
     $actions = [];
     foreach ($form['moderation_action'] as $key => $item) {
       if (substr($key, 0, 1) != '#') {
-        $actions[$key] = $form_state->getValue($key);
+        $actions[$item['#plugin']] = $form_state->getValue($key);
       }
     }
     $moderation_type->set('actions', $actions);
