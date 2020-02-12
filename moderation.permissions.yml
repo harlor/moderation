@@ -1,0 +1,20 @@
+add moderation entities:
+  title: 'Create new Moderation entities'
+
+administer moderation entities:
+  title: 'Administer Moderation entities'
+  description: 'Allow to access the administration form to configure Moderation entities.'
+  restrict access: true
+
+delete moderation entities:
+  title: 'Delete Moderation entities'
+
+edit moderation entities:
+  title: 'Edit Moderation entities'
+
+view published moderation entities:
+  title: 'View published Moderation entities'
+
+view unpublished moderation entities:
+  title: 'View unpublished Moderation entities'
+
