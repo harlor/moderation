@@ -26,10 +26,8 @@ function moderation_views_data_alter(&$data) {
       $entity_keys = $entity_type->getKeys();
 
       if (!in_array($machine_name, ['moderation', 'moderation_type'])) {
+        // Allow every entity exept moderation entities to join moderation.
         $data['moderation']['table']['join'][$base_table] = [
-//          'join_id' => 'moderation_join',
-          // Because this is a direct link it could be left out.
-//          'left_table' => $base_table,
           'left_field' => $entity_keys['id'],
           'field' => 'entity_id',
           'extra' => [

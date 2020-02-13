@@ -51,21 +51,21 @@ class PublishUnpublishModerationAction implements ModerationActionInterface {
 
     $links = [
       [
-        '#type'       => 'link',
+        '#type' => 'link',
         '#title' => $this->t('unpublish'),
         '#url' => $url,
         '#attributes' => [
           'class' => ['use-ajax', $this->specificCssClass($entity, $moderation, 'unpublish')],
-          'title' => $this->t('Trigger moderation action'),
+          'title' => $this->t('Trigger unpublish moderation action'),
         ],
       ],
       [
-        '#type'       => 'link',
+        '#type' => 'link',
         '#title' => $this->t('publish'),
         '#url' => $url2,
         '#attributes' => [
           'class' => ['use-ajax', $this->specificCssClass($entity, $moderation, 'publish')],
-          'title' => $this->t('Trigger moderation action'),
+          'title' => $this->t('Trigger publish moderation action'),
         ],
       ],
     ];
@@ -75,6 +75,7 @@ class PublishUnpublishModerationAction implements ModerationActionInterface {
     return $links;
 
   }
+
   protected function specificCssClass($entity, $moderation, $action) {
     return sprintf('%s-%s-%d', $action, $moderation->getModerationType(), $entity->id());
   }
