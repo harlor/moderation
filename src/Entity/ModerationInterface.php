@@ -56,4 +56,8 @@ interface ModerationInterface extends ContentEntityInterface, EntityChangedInter
    */
   public function setCreatedTime($timestamp);
 
+  public function getData();
+
+  public function getDataValue($key);
+
 }

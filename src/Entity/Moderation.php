@@ -8,6 +8,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType\MapItem;
 use Drupal\user\UserInterface;
 
 /**
@@ -113,6 +114,26 @@ class Moderation extends ContentEntityBase implements ModerationInterface {
   public function setOwner(UserInterface $account) {
     $this->set('user_id', $account->id());
     return $this;
+  }
+
+  public function getData() {
+    if (!$this->get('data')->isEmpty()) {
+      if ($this->get('data')->get(0) instanceof MapItem) {
+        return $this->get('data')->get(0)->getValue();
+      }
+    }
+
+    return [];
+  }
+
+
+  public function getDataValue($key) {
+    $data = $this->getData();
+    if (array_key_exists($key, $data)) {
+      return $data[$key];
+    }
+
+    return NULL;
   }
 
   /**

@@ -84,18 +84,18 @@ class ModerationType extends ConfigEntityBase implements ModerationTypeInterface
     $moderations = $this->entityTypeManager()->getStorage('moderation')->loadByProperties(
       [
         'entity_type' => $entity->getEntityTypeId(),
-        'entity_id' => $entity->bundle(),
+        'entity_id' => $entity->id(),
         'type' => $this->id,
       ]
     );
 
     if (!empty($moderations)) {
-      return $moderations[0];
+      return current($moderations);
     }
 
     return $this->entityTypeManager()->getStorage('moderation')->create([
       'entity_type' => $entity->getEntityTypeId(),
-      'entity_id' => $entity->bundle(),
+      'entity_id' => $entity->id(),
       'type' => $this->id,
     ]);
   }

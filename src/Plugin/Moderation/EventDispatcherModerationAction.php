@@ -2,7 +2,11 @@
 
 namespace Drupal\moderation\Plugin\Moderation;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\CssCommand;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\moderation\Entity\ModerationInterface;
 use Drupal\moderation\Plugin\ModerationActionInterface;
 
@@ -15,14 +19,66 @@ use Drupal\moderation\Plugin\ModerationActionInterface;
  * )
  */
 class EventDispatcherModerationAction implements ModerationActionInterface {
-  public function action() {
+  use StringTranslationTrait;
 
+  public function action(EntityInterface $entity, ModerationInterface $moderation) {
+    $actions = [
+      0 => 'moderate',
+      1 => 'unmoderate',
+    ];
+    $action = $actions[intval($moderation->getDataValue('moderated'))];
+
+    $moderation->set('data', ['moderated' => !$moderation->getDataValue('moderated')]);
+    $moderation->save();
+
+    $response = new AjaxResponse();
+    $response->addCommand(new CssCommand('.' . $this->specificCssClass($entity, $moderation, $action), ['display' => 'none']));
+
+    $action = $actions[intval($moderation->getDataValue('moderated'))];
+    $response->addCommand(new CssCommand('.' . $this->specificCssClass($entity, $moderation, $action), ['display' => 'block']));
+
+    return $response;
   }
 
   public function links(EntityInterface $entity, ModerationInterface $moderation) {
-    // @todo Add link to dispatch event
-    return 'Todo';
+    $url = Url::fromRoute('moderation.action', [
+      'moderation_type' => $moderation->getModerationType(),
+      'entity_id' => $entity->id(),
+      'action_name' => 'event_dispatcher',
+    ]);
 
+    $url2 = clone $url;
+
+    $links = [
+      [
+        '#type' => 'link',
+        '#title' => $this->t('unmoderate'),
+        '#url' => $url,
+        '#attributes' => [
+          'class' => ['use-ajax', $this->specificCssClass($entity, $moderation, 'unmoderate')],
+          'title' => $this->t('Trigger unpublish moderation action'),
+        ],
+      ],
+      [
+        '#type' => 'link',
+        '#title' => $this->t('moderate'),
+        '#url' => $url2,
+        '#attributes' => [
+          'class' => ['use-ajax', $this->specificCssClass($entity, $moderation, 'moderate')],
+          'title' => $this->t('Trigger publish moderation action'),
+        ],
+      ],
+    ];
+
+    $links[intval($moderation->getDataValue('moderated'))]['#attributes']['class'][] = 'hidden';
+
+    return $links;
+
+  }
+
+
+  protected function specificCssClass($entity, $moderation, $action) {
+    return sprintf('%s-%s-%d', $action, $moderation->getModerationType(), $entity->id());
   }
 
 }
