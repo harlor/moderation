@@ -7,6 +7,7 @@ use Drupal\Core\Ajax\CssCommand;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\custom_events\Event\ModerationEvent;
 use Drupal\moderation\Entity\ModerationInterface;
 use Drupal\moderation\Plugin\ModerationActionInterface;
 
@@ -22,6 +23,13 @@ class EventDispatcherModerationAction implements ModerationActionInterface {
   use StringTranslationTrait;
 
   public function action(EntityInterface $entity, ModerationInterface $moderation) {
+    // Instantiate our event.
+    $event = new ModerationEvent($entity, $moderation);
+
+    // Get the event_dispatcher service and dispatch the event.
+    $event_dispatcher = \Drupal::service('event_dispatcher');
+    $event_dispatcher->dispatch(ModerationEvent::EVENT_NAME, $event);
+
     $actions = [
       0 => 'moderate',
       1 => 'unmoderate',
