@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\custom_events\Event;
+namespace Drupal\moderation\Event;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\moderation\Entity\ModerationInterface;
