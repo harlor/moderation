@@ -1,0 +1,19 @@
+{
+  "name": "drupal/moderation",
+  "description": "A node and comment moderation queue",
+  "type": "drupal-module",
+  "keywords": ["Drupal", "Moderation"],
+  "homepage": "http://drupal.org/project/moderation",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Stefan Auditor (sanduhrs)",
+      "homepage": "https://www.drupal.org/u/sanduhrs",
+      "role": "Maintainer"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/moderation",
+    "source": "http://cgit.drupalcode.org/moderation"
+  }
+}
