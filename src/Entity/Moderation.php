@@ -136,6 +136,14 @@ class Moderation extends ContentEntityBase implements ModerationInterface {
     return NULL;
   }
 
+  public function moderated($moderated = NULL) {
+    if (!is_null($moderated)) {
+      $this->set('moderated', $moderated);
+    }
+
+    return $this->get('modrated');
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -200,6 +208,18 @@ class Moderation extends ContentEntityBase implements ModerationInterface {
       ->setLabel(t('data'))
       ->setDescription(t('Additional data.'))
       ->setRequired(FALSE);
+
+    $fields['moderated'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Moderation status'))
+      ->setDefaultValue(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+        'weight' => 15,
+      ])
+      ->setDisplayConfigurable('form', TRUE);
 
     return $fields;
   }

@@ -7,7 +7,7 @@ use Drupal\Core\Ajax\CssCommand;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
-use Drupal\custom_events\Event\ModerationEvent;
+use Drupal\moderation\Event\ModerationEvent;
 use Drupal\moderation\Entity\ModerationInterface;
 use Drupal\moderation\Plugin\ModerationActionInterface;
 
@@ -37,6 +37,7 @@ class EventDispatcherModerationAction implements ModerationActionInterface {
     $action = $actions[intval($moderation->getDataValue('moderated'))];
 
     $moderation->set('data', ['moderated' => !$moderation->getDataValue('moderated')]);
+    $moderation->set('moderated', !$moderation->get('moderated')->getValue()[0]['value']);
     $moderation->save();
 
     $response = new AjaxResponse();
@@ -64,7 +65,7 @@ class EventDispatcherModerationAction implements ModerationActionInterface {
         '#url' => $url,
         '#attributes' => [
           'class' => ['use-ajax', $this->specificCssClass($entity, $moderation, 'unmoderate')],
-          'title' => $this->t('Trigger unpublish moderation action'),
+          'title' => $this->t('Trigger unmoderate moderation action'),
         ],
       ],
       [
@@ -73,7 +74,7 @@ class EventDispatcherModerationAction implements ModerationActionInterface {
         '#url' => $url2,
         '#attributes' => [
           'class' => ['use-ajax', $this->specificCssClass($entity, $moderation, 'moderate')],
-          'title' => $this->t('Trigger publish moderation action'),
+          'title' => $this->t('Trigger moderate moderation action'),
         ],
       ],
     ];
