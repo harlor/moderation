@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\d8views\Plugin\views\field\NodeTypeFlagger
- */
-
 namespace Drupal\moderation\Plugin\views\field;
 
 use Drupal\Core\Form\FormStateInterface;
@@ -30,11 +25,12 @@ class ModerationAction extends FieldPluginBase {
 
   /**
    * Define the available options
+   *
    * @return array
    */
   protected function defineOptions() {
     $options = parent::defineOptions();
-    $options['node_type'] = array('default' => 'article');
+    $options['moderation_type'] = ['default' => ''];
 
     return $options;
   }
@@ -43,16 +39,20 @@ class ModerationAction extends FieldPluginBase {
    * Provide the options form.
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
-    $types = NodeType::loadMultiple();
     $options = [];
-    foreach ($types as $key => $type) {
-      $options[$key] = $type->label();
+
+    /** @var \Drupal\moderation\Entity\ModerationType[] $moderation_types */
+    $moderation_types = \Drupal::entityTypeManager()->getStorage('moderation_type')->loadMultiple();
+    foreach ($moderation_types as $moderation_type) {
+      $options[$moderation_type->id()] = $moderation_type->label();
     }
-    $form['node_type'] = array(
-      '#title' => $this->t('Which node type should be flagged?'),
+
+    $form['moderation_type'] = array(
+      '#title' => $this->t('Which moderation type should be shown?'),
       '#type' => 'select',
-      '#default_value' => $this->options['node_type'],
+      '#default_value' => $this->options['moderation_type'],
       '#options' => $options,
+      '#multiple' => TRUE,
     );
 
     parent::buildOptionsForm($form, $form_state);
@@ -64,9 +64,10 @@ class ModerationAction extends FieldPluginBase {
   public function render(ResultRow $values) {
     $links = [];
     $entity = $values->_entity;
+    /** @var \Drupal\moderation\Entity\ModerationType[] $moderation_types */
     $moderation_types = \Drupal::entityTypeManager()->getStorage('moderation_type')->loadMultiple();
     foreach ($moderation_types as $moderation_type) {
-      if ($moderation_type->entityIsModerated($entity)) {
+      if (in_array($moderation_type->id(), $this->options['moderation_type']) && $moderation_type->entityIsModerated($entity)) {
         $links += $moderation_type->actionLinks($entity);
       }
     }

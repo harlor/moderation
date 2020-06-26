@@ -74,7 +74,15 @@ class ModerationType extends ConfigEntityBase implements ModerationTypeInterface
   public function actionLinks(EntityInterface $entity) {
     $links = [];
     foreach ($this->getActions() as $action_plugin) {
-      $links += $action_plugin->links($entity, $this->getModerationEntity($entity));
+      if(!empty($links)) {
+        $links[] = [
+          '#type' => 'markup',
+          '#markup' => ' ',
+        ];
+      }
+      foreach ($action_plugin->links($entity, $this->getModerationEntity($entity)) as $link) {
+        $links[] = $link;
+      }
     }
 
     return $links;
