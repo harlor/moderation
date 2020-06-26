@@ -12,7 +12,7 @@ use Drupal\moderation\Entity\ModerationInterface;
 use Drupal\moderation\Plugin\ModerationActionInterface;
 
 /**
- * Plugin implementation of the 'text_plain' formatter.
+ * Plugin implementation of the 'event_dispatcher' moderation action.
  *
  * @ModerationAction(
  *   id = "event_dispatcher",

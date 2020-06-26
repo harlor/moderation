@@ -11,7 +11,7 @@ use Drupal\moderation\Plugin\ModerationActionInterface;
 use Drupal\Core\Url;
 
 /**
- * Plugin implementation of the 'text_plain' formatter.
+ * Plugin implementation of the 'publish_unpublish' moderation action.
  *
  * @ModerationAction(
  *   id = "publish_unpublish",
